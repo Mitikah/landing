@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Landing Page con Fondo</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('Mitikah 2024-1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 60px 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95); /* semi-transparente para leer mejor */
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      margin-top: 60px;
+      border-radius: 12px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #1a1a1a;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 20px 0;
+    }
+
+    input[type="text"], input[type="email"] {
+      padding: 12px;
+      width: 90%;
+      max-width: 400px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    input[type="submit"] {
+      background-color: #007BFF;
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    .toast {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background-color: #4caf50;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast.error {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>¡Únete a nuestra comunidad!</h1>
+    <p>Déjanos tu nombre y correo para recibir novedades exclusivas.</p>
+
+    <form id="miFormulario">
+      <input type="text" name="nombre" placeholder="nombre completo" required><br>
+      <input type="email" name="correo" placeholder="correo electrónico" required><br>
+      <input type="submit" value="Registrarme">
+    </form>
+  </div>
+
+  <div class="footer">
+    © 2025 Mitikah Centro Comercial. Todos los derechos reservados.
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const formulario = document.getElementById('miFormulario');
+    const toast = document.getElementById('toast');
+
+    function mostrarToast(mensaje, tipo = 'success') {
+      toast.textContent = mensaje;
+      toast.className = 'toast show';
+      if (tipo === 'error') toast.classList.add('error');
+
+      setTimeout(() => {
+        toast.className = 'toast';
+      }, 4000);
+    }
+
+    formulario.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const datos = new FormData(formulario);
+
+      fetch('https://script.google.com/macros/s/AKfycbxRASwVnPapRvxdAp8y4w8IBPGbtIIYoD0Le0wxzdSpJQoqGi1ZozEDtOCFqQOlKw/exec', {
+        method: 'POST',
+        body: datos
+      })
+      .then(response => response.text())
+      .then(data => {
+        mostrarToast("✅ ¡Registro exitoso!");
+        formulario.reset();
+      })
+      .catch(error => {
+        mostrarToast("❌ Ocurrió un error. Intenta de nuevo.", 'error');
+      });
+    });
+  </script>
+
+</body>
+</html>
